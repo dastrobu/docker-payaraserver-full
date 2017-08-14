@@ -9,12 +9,12 @@ ENV ADMIN_USER admin
 ENV PAYARA_PATH /opt/payara41
 
 RUN \ 
- useradd -b /opt -m -s /bin/bash -u 1000080000 -d ${PAYARA_PATH} payara && echo payara:payara | chpasswd && \
- mkdir -p ${PAYARA_PATH}/deployments
+ mkdir -p ${PAYARA_PATH}/deployments && \
+ useradd -b /opt -m -s /bin/bash -d ${PAYARA_PATH} payara && echo payara:payara | chpasswd
 
 # specify Payara version to download
-ENV PAYARA_PKG https://s3-eu-west-1.amazonaws.com/payara.fish/Payara+Downloads/Payara+4.1.2.173/payara-4.1.2.173.zip
-ENV PAYARA_VERSION 173
+ENV PAYARA_PKG https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=fish.payara.distributions&a=payara&v=5.0.0.173-SNAPSHOT&p=zip
+ENV PAYARA_VERSION 5-SNAPSHOT
 
 ENV PKG_FILE_NAME payara-full-${PAYARA_VERSION}.zip
 
@@ -67,17 +67,10 @@ EXPOSE 4848 8009 8080 8181
 
 ENV DEPLOY_COMMANDS=${PAYARA_PATH}/post-boot-commands.asadmin
 COPY generate_deploy_commands.sh ${PAYARA_PATH}/generate_deploy_commands.sh
-
-RUN touch $DEPLOY_COMMANDS
-
 USER root
 RUN \
- chmod a+rw ${DEPLOY_COMMANDS} && \
- chmod -R a+rwx /opt && \
  chown -R payara:payara ${PAYARA_PATH}/generate_deploy_commands.sh && \
  chmod a+x ${PAYARA_PATH}/generate_deploy_commands.sh
-
 USER payara
 
 ENTRYPOINT ${PAYARA_PATH}/generate_deploy_commands.sh && ${PAYARA_PATH}/bin/asadmin start-domain -v --postbootcommandfile ${DEPLOY_COMMANDS} ${PAYARA_DOMAIN}
-# ENTRYPOINT ["tail", "-f", "/dev/null"]
