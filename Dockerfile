@@ -73,7 +73,7 @@ RUN touch $DEPLOY_COMMANDS
 USER root
 RUN \
  chown -R payara:payara ${PAYARA_PATH}/generate_deploy_commands.sh && \
- chmod a+x ${PAYARA_PATH}/generate_deploy_commands.sh && \
+ chmod a+x ${PAYARA_PATH}/generate_deploy_commands.sh
 
 USER payara
 
