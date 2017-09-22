@@ -69,8 +69,9 @@ ENV DEPLOY_COMMANDS=${PAYARA_PATH}/post-boot-commands.asadmin
 COPY generate_deploy_commands.sh ${PAYARA_PATH}/generate_deploy_commands.sh
 USER root
 RUN \
- chown -R payara:payara ${PAYARA_PATH}/generate_deploy_commands.sh && \
+ chown -R payara:payara ${PAYARA_PATH} && \
  chmod a+x ${PAYARA_PATH}/generate_deploy_commands.sh
+
 USER payara
 
 #ENTRYPOINT ${PAYARA_PATH}/generate_deploy_commands.sh && ${PAYARA_PATH}/bin/asadmin start-domain -v --postbootcommandfile ${DEPLOY_COMMANDS} ${PAYARA_DOMAIN}
