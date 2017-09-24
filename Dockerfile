@@ -9,8 +9,8 @@ ENV ADMIN_USER admin
 ENV PAYARA_PATH /opt/payara41
 
 RUN \ 
- mkdir -p ${PAYARA_PATH}/deployments && \
- useradd -b /opt -m -s /bin/bash -d ${PAYARA_PATH} payara && echo payara:payara | chpasswd
+ useradd -b /opt -m -s /bin/bash -d ${PAYARA_PATH} payara && echo payara:payara | chpasswd && \
+ mkdir -p ${PAYARA_PATH}/deployments
 
 # specify Payara version to download
 ENV PAYARA_PKG https://s3-eu-west-1.amazonaws.com/payara.fish/Payara+Downloads/Payara+4.1.2.173/payara-4.1.2.173.zip
@@ -79,5 +79,5 @@ RUN \
 
 USER payara
 
-# ENTRYPOINT ${PAYARA_PATH}/generate_deploy_commands.sh && ${PAYARA_PATH}/bin/asadmin start-domain -v --postbootcommandfile ${DEPLOY_COMMANDS} ${PAYARA_DOMAIN}
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENTRYPOINT ${PAYARA_PATH}/generate_deploy_commands.sh && ${PAYARA_PATH}/bin/asadmin start-domain -v --postbootcommandfile ${DEPLOY_COMMANDS} ${PAYARA_DOMAIN}
+# ENTRYPOINT ["tail", "-f", "/dev/null"]
