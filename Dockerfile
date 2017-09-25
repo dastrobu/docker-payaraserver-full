@@ -9,8 +9,9 @@ ENV ADMIN_USER admin
 ENV PAYARA_PATH /opt/payara50
 
 RUN \ 
+ useradd -b /opt -m -s /bin/bash -d ${PAYARA_PATH} -G 0 payara && echo payara:payara | chpasswd && \
  mkdir -p ${PAYARA_PATH}/deployments && \
- useradd -b /opt -m -s /bin/bash -d ${PAYARA_PATH} -G 0 payara && echo payara:payara | chpasswd
+ chmod -R g+w ${PAYARA_PATH}
 
 # specify Payara version to download
 ENV PAYARA_PKG https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=fish.payara.distributions&a=payara&v=5.0.0.174-SNAPSHOT&p=zip
@@ -68,7 +69,7 @@ EXPOSE 4848 8009 8080 8181
 
 ENV DEPLOY_COMMANDS=${PAYARA_PATH}/post-boot-commands.asadmin
 COPY generate_deploy_commands.sh ${PAYARA_PATH}/generate_deploy_commands.sh
-USER root
+USER 0
 RUN \
  chgrp -R 0 ${PAYARA_PATH}/generate_deploy_commands.sh && \
  chmod g+x ${PAYARA_PATH}/generate_deploy_commands.sh
