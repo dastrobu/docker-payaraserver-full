@@ -9,7 +9,7 @@ ENV ADMIN_USER admin
 ENV PAYARA_PATH /opt/payara41
 
 RUN \ 
- useradd -b /opt -m -s /bin/bash -d ${PAYARA_PATH} payara && echo payara:payara | chpasswd && \
+ useradd -b /opt -m -s /bin/bash -u 1000080000 -d ${PAYARA_PATH} payara && echo payara:payara | chpasswd && \
  mkdir -p ${PAYARA_PATH}/deployments
 
 # specify Payara version to download
