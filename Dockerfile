@@ -24,6 +24,7 @@ RUN \
  wget --quiet -O /opt/${PKG_FILE_NAME} ${PAYARA_PKG} && \
  unzip -qq /opt/${PKG_FILE_NAME} -d /opt && \
  chown -R payara /opt && \
+ chmod -R g+rw /opt && \
  chgrp -R 0 /opt && \
  # cleanup
  rm /opt/${PKG_FILE_NAME}
