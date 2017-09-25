@@ -22,7 +22,8 @@ ENV PKG_FILE_NAME payara-full-${PAYARA_VERSION}.zip
 RUN \
  wget --quiet -O /opt/${PKG_FILE_NAME} ${PAYARA_PKG} && \
  unzip -qq /opt/${PKG_FILE_NAME} -d /opt && \
- chown -R payara:payara /opt && \
+ chown -R payara /opt && \
+ chgrp -R 0 /opt && \
  # cleanup
  rm /opt/${PKG_FILE_NAME}
 
@@ -69,8 +70,8 @@ ENV DEPLOY_COMMANDS=${PAYARA_PATH}/post-boot-commands.asadmin
 COPY generate_deploy_commands.sh ${PAYARA_PATH}/generate_deploy_commands.sh
 USER root
 RUN \
- chown -R payara:payara ${PAYARA_PATH}/generate_deploy_commands.sh && \
- chmod a+x ${PAYARA_PATH}/generate_deploy_commands.sh
+ chgrp -R 0 ${PAYARA_PATH}/generate_deploy_commands.sh && \
+ chmod g+x ${PAYARA_PATH}/generate_deploy_commands.sh
 USER payara
 
 ENTRYPOINT ${PAYARA_PATH}/generate_deploy_commands.sh && ${PAYARA_PATH}/bin/asadmin start-domain -v --postbootcommandfile ${DEPLOY_COMMANDS} ${PAYARA_DOMAIN}
