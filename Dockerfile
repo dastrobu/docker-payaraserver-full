@@ -10,7 +10,7 @@ ENV PAYARA_PATH /opt/payara50
 
 RUN \ 
  mkdir -p ${PAYARA_PATH}/deployments && \
- useradd -b /opt -m -s /bin/bash -d ${PAYARA_PATH} payara && echo payara:payara | chpasswd
+ useradd -b /opt -m -s /bin/bash -d ${PAYARA_PATH} -G 0 payara && echo payara:payara | chpasswd
 
 # specify Payara version to download
 ENV PAYARA_PKG https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=fish.payara.distributions&a=payara&v=5.0.0.174-SNAPSHOT&p=zip
