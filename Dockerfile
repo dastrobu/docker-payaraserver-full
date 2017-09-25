@@ -29,6 +29,7 @@ RUN \
  rm /opt/${PKG_FILE_NAME}
 
 USER payara
+RUN umask g+rw
 WORKDIR ${PAYARA_PATH}
 
 # set credentials to admin/admin 
