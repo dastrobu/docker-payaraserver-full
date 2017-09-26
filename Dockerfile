@@ -77,6 +77,6 @@ RUN \
  chmod g+x ${PAYARA_PATH}/generate_deploy_commands.sh
 USER payara
 
-RUN chmod g+rw ${PAYARA_PATH}
+RUN chmod -R g+rw /opt
 
 ENTRYPOINT ${PAYARA_PATH}/generate_deploy_commands.sh && ${PAYARA_PATH}/bin/asadmin start-domain -v --postbootcommandfile ${DEPLOY_COMMANDS} ${PAYARA_DOMAIN}
