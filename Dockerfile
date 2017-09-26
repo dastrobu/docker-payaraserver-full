@@ -71,9 +71,15 @@ EXPOSE 4848 8009 8080 8181
 
 ENV DEPLOY_COMMANDS=${PAYARA_PATH}/post-boot-commands.asadmin
 COPY generate_deploy_commands.sh ${PAYARA_PATH}/generate_deploy_commands.sh
+USER 0
 RUN \
- chmod g+x ${PAYARA_PATH}/generate_deploy_commands.sh
+ chown payara ${PAYARA_PATH}/generate_deploy_commands.sh && \
+ chgrp 0 ${PAYARA_PATH}/generate_deploy_commands.sh && \
+ chmod g+x ${PAYARA_PATH}/generate_deploy_commands.sh && \
+ chmod -R g+rw /opt
 
-RUN chmod -R g+rw /opt
+USER payara
 
-ENTRYPOINT ${PAYARA_PATH}/generate_deploy_commands.sh && ${PAYARA_PATH}/bin/asadmin start-domain -v --postbootcommandfile ${DEPLOY_COMMANDS} ${PAYARA_DOMAIN}
+
+# ENTRYPOINT ${PAYARA_PATH}/generate_deploy_commands.sh && ${PAYARA_PATH}/bin/asadmin start-domain -v --postbootcommandfile ${DEPLOY_COMMANDS} ${PAYARA_DOMAIN}
+ENTRYPOINT ["tail", "-t", "/dev/null"]
