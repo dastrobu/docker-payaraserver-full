@@ -82,4 +82,4 @@ USER payara
 
 
 # ENTRYPOINT ${PAYARA_PATH}/generate_deploy_commands.sh && ${PAYARA_PATH}/bin/asadmin start-domain -v --postbootcommandfile ${DEPLOY_COMMANDS} ${PAYARA_DOMAIN}
-ENTRYPOINT ["tail", "-t", "/dev/null"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
