@@ -9,7 +9,7 @@ ENV ADMIN_USER admin
 ENV PAYARA_PATH /opt/payara50
 
 RUN \ 
- useradd -b /opt -m -s /bin/bash -d ${PAYARA_PATH} -G 0 payara && echo payara:payara | chpasswd && \
+ useradd -b /opt -m -s /bin/bash -d ${PAYARA_PATH} -g 0 payara && echo payara:payara | chpasswd && \
  mkdir -p ${PAYARA_PATH}/deployments && \
  chmod -R g+w ${PAYARA_PATH}
 
@@ -71,11 +71,8 @@ EXPOSE 4848 8009 8080 8181
 
 ENV DEPLOY_COMMANDS=${PAYARA_PATH}/post-boot-commands.asadmin
 COPY generate_deploy_commands.sh ${PAYARA_PATH}/generate_deploy_commands.sh
-USER 0
 RUN \
- chgrp -R 0 ${PAYARA_PATH}/generate_deploy_commands.sh && \
  chmod g+x ${PAYARA_PATH}/generate_deploy_commands.sh
-USER payara
 
 RUN chmod -R g+rw /opt
 
